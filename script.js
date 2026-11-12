@@ -75,7 +75,7 @@
   function behaviors() {
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var btn = doc.getElementById("theme-btn"), mq = window.matchMedia("(prefers-color-scheme: dark)");
-    try { var saved = localStorage.getItem("sv-theme"); if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved); } catch (e) { /* storage blocked: follow the system theme */ }
+    /* Always open in light mode; the toggle switches for this visit */
     function current() { var t = root.getAttribute("data-theme"); return t === "light" || t === "dark" ? t : (mq.matches ? "dark" : "light"); }
     function label() { if (btn) btn.setAttribute("aria-label", current() === "dark" ? "Switch to light theme" : "Switch to dark theme"); }
     if (btn) btn.addEventListener("click", function () {

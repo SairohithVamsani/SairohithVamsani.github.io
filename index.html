@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -621,7 +621,7 @@
         var mq = window.matchMedia("(prefers-color-scheme: dark)");
 
         /* Theme: follows the system unless the visitor picks one */
-        try { var saved = localStorage.getItem("sv-theme"); if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved); } catch (e) {}
+        /* Always open in light mode; the toggle switches for this visit */
         var themeBtn = doc.getElementById("x-theme");
         function current() { var t = root.getAttribute("data-theme"); return t === "light" || t === "dark" ? t : (mq.matches ? "dark" : "light"); }
         function label() { themeBtn.setAttribute("aria-label", current() === "dark" ? "Switch to light theme" : "Switch to dark theme"); }
