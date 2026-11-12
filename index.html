@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sairohith Vamsani · AI / ML Engineer</title>
+    <meta name="description" content="Sairohith Vamsani, AI/ML engineer in Hyderabad building NLP, semantic search and text-to-speech systems." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="hero.css" />
+    <link rel="stylesheet" href="charts.css" />
+    <style>
+      /* Theme switch: colors glide for half a second */
+      .x-theming, .x-theming *, .x-theming *::before, .x-theming *::after {
+        transition: background-color 500ms var(--ease-out), color 500ms var(--ease-out), border-color 500ms var(--ease-out), fill 500ms var(--ease-out), box-shadow 500ms var(--ease-out) !important;
+      }
+      .x-mono { font-family: "Geist Mono", ui-monospace, monospace; }
+
+      /* Top bar */
+      .x-bar {
+        position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 30;
+        display: flex; align-items: center; gap: 8px;
+        padding: 6px 6px 6px 8px; border-radius: var(--r-pill);
+        background: var(--mat-regular); -webkit-backdrop-filter: var(--sv-blur); backdrop-filter: var(--sv-blur);
+        border: 1px solid var(--stroke-secondary); box-shadow: var(--sv-shadow);
+      }
+      .x-brand { display: inline-flex; align-items: center; gap: 10px; min-height: var(--tap); padding-right: 8px; text-decoration: none; font: var(--type-label); color: var(--text-primary); }
+      .x-brand__mark { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--fill-primary); color: var(--text-primary-on); font: var(--type-tag); letter-spacing: 0.04em; }
+      .x-links { display: flex; gap: 2px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+      .x-links a { display: flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: var(--r-pill); font: var(--type-label); color: var(--text-secondary); text-decoration: none; transition: color var(--dur-quick) ease, background-color var(--dur-quick) ease; }
+      .x-links a:hover { color: var(--text-primary); background: var(--hover-wash); }
+      .x-links a[aria-current="true"] { color: var(--text-primary); background: var(--fill-tertiary); }
+      .x-iconbtn {
+        flex: none; width: var(--tap); height: var(--tap); display: grid; place-items: center;
+        border: 1px solid var(--stroke-secondary); border-radius: 50%; background: var(--fill-primary-on); color: var(--text-primary);
+        cursor: pointer; text-decoration: none; transition: transform var(--dur-quick) var(--ease-out), box-shadow var(--dur-quick) ease;
+      }
+      .x-iconbtn:hover { box-shadow: inset 0 0 0 100px var(--hover-wash); }
+      .x-iconbtn svg { width: 18px; height: 18px; }
+      .x-theme { position: relative; overflow: hidden; }
+      .x-theme svg { position: absolute; inset: 0; margin: auto; transition: transform 500ms var(--ease-out), opacity 300ms ease; }
+      .x-theme .x-sun { transform: rotate(-90deg) scale(0.4); opacity: 0; }
+      :root[data-theme="dark"] .x-theme .x-sun { transform: none; opacity: 1; }
+      :root[data-theme="dark"] .x-theme .x-moon { transform: rotate(90deg) scale(0.4); opacity: 0; }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .x-theme .x-sun { transform: none; opacity: 1; }
+        :root:not([data-theme="light"]) .x-theme .x-moon { transform: rotate(90deg) scale(0.4); opacity: 0; }
+      }
+      .x-menu { display: none; }
+      @media (max-width: 760px) {
+        .x-menu { display: grid; margin-left: auto; }
+        .x-links {
+          position: absolute; top: calc(100% + 8px); left: 0; right: 0; margin: 0;
+          flex-direction: column; gap: 2px; padding: 8px; border-radius: var(--r-l);
+          background: var(--mat-agent); -webkit-backdrop-filter: var(--sv-blur); backdrop-filter: var(--sv-blur);
+          border: 1px solid var(--stroke-secondary); box-shadow: var(--sv-shadow);
+          opacity: 0; visibility: hidden; transform: translateY(-6px);
+          transition: opacity var(--dur-quick) ease, transform 300ms var(--ease-out), visibility 0s linear 300ms;
+        }
+        .x-bar.is-open .x-links { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+        .x-links a { min-height: var(--tap); font: var(--type-body-strong); }
+      }
+
+      /* Hero */
+      .x-hero {
+        position: relative; isolation: isolate; overflow: hidden;
+        display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 40px;
+        padding: clamp(32px, 6vw, 72px); border-radius: var(--r-xl);
+        border: 1px solid var(--stroke-secondary); background: var(--fill-primary-on);
+      }
+      .x-glow { position: absolute; inset: -30%; z-index: -1; pointer-events: none; filter: blur(70px); opacity: 0.75; }
+      .x-glow span { position: absolute; width: 46%; aspect-ratio: 1; border-radius: 50%; animation: x-drift 18s ease-in-out infinite alternate; }
+      .x-glow span:nth-child(1) { background: var(--chart-1); top: 18%; right: 14%; }
+      .x-glow span:nth-child(2) { background: var(--chart-4); top: 40%; right: 30%; animation-duration: 22s; animation-direction: alternate-reverse; }
+      .x-glow span:nth-child(3) { background: var(--chart-3); top: 50%; right: 6%; width: 32%; animation-duration: 26s; }
+      :root[data-theme="dark"] .x-glow { opacity: 0.28; }
+      @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .x-glow { opacity: 0.28; } }
+      @keyframes x-drift { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-8%, 6%) scale(1.12); } 100% { transform: translate(6%, -8%) scale(0.94); } }
+      .x-hero__copy { display: grid; gap: 18px; min-width: 0; }
+      .x-avail { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 6px 12px; border-radius: var(--r-pill); background: var(--mat-agent); border: 1px solid var(--stroke-secondary); font: var(--type-tag); color: var(--text-primary); }
+      .x-avail::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fill-system-green); box-shadow: 0 0 0 0 var(--fill-system-green); animation: x-ping 2.4s ease-out infinite; }
+      @keyframes x-ping { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--fill-system-green) 50%, transparent); } 100% { box-shadow: 0 0 0 8px transparent; } }
+      .x-hero h1 { font: var(--weight-medium) clamp(40px, 7vw, 76px)/1.02 var(--sans); letter-spacing: -0.035em; }
+      .x-role { font: var(--type-lede); color: var(--text-primary); }
+      .x-tagline { font-size: var(--size-prose); line-height: 1.5; color: var(--text-secondary); max-width: 52ch; }
+      .x-loc { display: flex; align-items: center; gap: 8px; font: var(--type-small); color: var(--text-secondary); }
+      .x-loc svg { flex: none; width: 16px; height: 16px; }
+      .x-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; }
+      .x-cta {
+        display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); padding: 0 20px;
+        border-radius: var(--r-pill); font: var(--type-body-strong); text-decoration: none; cursor: pointer;
+        transition: transform var(--dur-quick) var(--ease-out), box-shadow var(--dur-quick) ease;
+      }
+      .x-cta svg { width: 16px; height: 16px; }
+      .x-cta--solid { background: var(--fill-primary); color: var(--text-primary-on); border: 1px solid var(--fill-primary); }
+      .x-cta--solid:hover { box-shadow: inset 0 0 0 100px var(--hover-wash-primary-on); }
+      .x-cta--line { background: var(--mat-agent); color: var(--text-primary); border: 1px solid var(--stroke-primary); }
+      .x-cta--line:hover { box-shadow: inset 0 0 0 100px var(--hover-wash); }
+      .x-cta:active, .x-iconbtn:active { transform: scale(0.97); }
+      .x-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; }
+      .x-facts li { padding: 6px 12px; border-radius: var(--r-pill); background: var(--mat-agent); border: 1px solid var(--stroke-secondary); font: var(--type-tag); color: var(--text-secondary); }
+      .x-facts b { color: var(--text-primary); font-weight: var(--weight-bold); }
+
+      /* Avatar: swap the monogram span for <img src="profile.jpg" alt="Sairohith Vamsani"> */
+      .x-avatar { position: relative; width: clamp(160px, 22vw, 240px); aspect-ratio: 1; border-radius: 50%; padding: 5px; }
+      .x-avatar::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 0deg, var(--chart-1), var(--chart-4), var(--chart-7), var(--chart-3), var(--chart-6), var(--chart-1)); animation: x-spin 14s linear infinite; }
+      .x-avatar::after { content: ""; position: absolute; inset: -14px; z-index: -1; border-radius: 50%; background: inherit; }
+      @keyframes x-spin { to { transform: rotate(1turn); } }
+      .x-avatar > * { position: relative; width: 100%; height: 100%; border-radius: 50%; }
+      .x-avatar img { object-fit: cover; }
+      .x-avatar__mono { display: grid; place-items: center; background: var(--fill-primary-on); color: var(--text-primary); font: var(--weight-medium) clamp(48px, 7vw, 76px)/1 var(--sans); letter-spacing: -0.04em; box-shadow: inset 0 0 0 1px var(--stroke-secondary); }
+      @media (max-width: 760px) {
+        .x-hero { grid-template-columns: 1fr; gap: 28px; }
+        .x-avatar { order: -1; width: 120px; }
+        .x-avatar__mono { font-size: 40px; }
+      }
+
+      /* Education card bits */
+      .x-edu small { display: block; color: var(--text-secondary); margin-top: 4px; }
+      .x-label { font: var(--type-tag); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+      .x-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+      .x-tags .pill { padding: 3px 10px; }
+      .cards .x-tags li { padding: 0; border: 0; }
+
+      /* Experience */
+      .x-role-title { font: var(--type-heading); }
+      .x-org { color: var(--text-secondary); margin: 4px 0 12px; }
+      .timeline__what .x-org + ul li { line-height: 1.5; }
+
+      /* Projects */
+      .x-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .x-proj {
+        position: relative; display: flex; flex-direction: column; gap: 12px; padding: 24px;
+        border-radius: var(--r-l); background: var(--fill-tertiary); border: 1px solid var(--stroke-secondary);
+        transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out), border-color 300ms ease;
+      }
+      .x-proj:hover { transform: translateY(-4px); box-shadow: var(--sv-shadow); border-color: var(--stroke-primary); }
+      .x-proj__top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: space-between; }
+      .x-proj__when { font: var(--type-tag); color: var(--text-secondary); }
+      .x-proj h3 { font: var(--type-heading); }
+      .x-proj h3 small { display: block; font: var(--type-small); color: var(--text-secondary); margin-top: 4px; }
+      .x-proj p { line-height: 1.5; }
+      .x-proj__foot { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      .x-onreq { display: inline-flex; align-items: center; gap: 6px; font: var(--type-tag); color: var(--text-secondary); padding: 6px 12px; border-radius: var(--r-pill); border: 1px dashed var(--stroke-primary); }
+      .x-proj--feature { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px 40px; padding: clamp(24px, 3.4vw, 40px); background: var(--fill-primary-on); overflow: hidden; isolation: isolate; }
+      .x-proj--feature::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, var(--chart-1) 45%, transparent), transparent 70%), radial-gradient(50% 70% at 0% 100%, color-mix(in srgb, var(--chart-3) 30%, transparent), transparent 70%); }
+      .x-proj--feature h3 { font: var(--type-title); letter-spacing: -0.02em; }
+      .x-proj--feature > div { display: flex; flex-direction: column; gap: 14px; }
+      .x-proj--feature ul.x-points { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+      .x-points li { position: relative; padding: 12px 14px 12px 34px; border-radius: var(--r-s); background: var(--mat-agent); border: 1px solid var(--stroke-secondary); font: var(--type-small); line-height: 1.45; }
+      .x-points li::before { content: ""; position: absolute; left: 14px; top: 18px; width: 7px; height: 7px; border-radius: 50%; background: var(--fill-system-green); }
+      .x-figs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+      .x-figs li { padding: 8px 12px; border-radius: var(--r-s); background: var(--mat-agent); border: 1px solid var(--stroke-secondary); font: var(--type-small); color: var(--text-secondary); }
+      .x-figs b { display: block; font: var(--type-body-strong); color: var(--text-primary); }
+      /* Project switcher: one featured card, the rest compact */
+      .x-proj { scroll-margin-top: 96px; }
+      .x-proj > div { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+      .x-proj__badges { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+      .x-proj:not(.x-proj--feature) .x-feat-only { display: none; }
+      .x-proj--feature .x-small-only { display: none; }
+      .x-proj:not(.x-proj--feature) { cursor: pointer; }
+      .x-proj:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+      .x-proj__open { margin-top: auto; padding-top: 6px; font: var(--type-tag); color: var(--text-secondary); transition: color var(--dur-quick) ease; }
+      .x-proj:hover .x-proj__open, .x-proj:focus-visible .x-proj__open { color: var(--text-primary); }
+      .x-proj.is-swapped { animation: x-swap-in 520ms var(--ease-out); }
+      @keyframes x-swap-in { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) { .x-proj.is-swapped { animation: none; } }
+      @media (max-width: 899px) { .x-projects { grid-template-columns: repeat(2, minmax(0, 1fr)); } .x-proj--feature { grid-template-columns: 1fr; } }
+      @media (max-width: 600px) { .x-projects { grid-template-columns: 1fr; } .x-proj { padding: 20px; } }
+
+      .x-more { margin-top: 40px; }
+      .x-more h3 { font: var(--type-heading); margin-bottom: 12px; }
+      .x-repos { margin: 0 0 20px; padding: 0; list-style: none; border-top: 1px solid var(--stroke-secondary); }
+      .x-repos a { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto; gap: 6px 24px; align-items: baseline; padding: 14px 4px; border-bottom: 1px solid var(--stroke-secondary); text-decoration: none; transition: background-color var(--dur-quick) ease, padding var(--dur-quick) var(--ease-out); border-radius: 0; }
+      .x-repos a:hover { background: var(--hover-wash); padding-inline: 12px; }
+      .x-repos strong { font: var(--type-body-strong); }
+      .x-repos span { font: var(--type-small); color: var(--text-secondary); }
+      .x-repos i { font-style: normal; color: var(--text-secondary); transition: transform var(--dur-quick) var(--ease-out); }
+      .x-repos a:hover i { transform: translate(2px, -2px); color: var(--text-primary); }
+      @media (max-width: 600px) { .x-repos a { grid-template-columns: minmax(0, 1fr) auto; } .x-repos span { grid-column: 1; grid-row: 2; } .x-repos i { grid-row: 1; grid-column: 2; } }
+
+      /* Certifications */
+      .x-cert h3 { font: var(--type-body-strong); margin: 0; }
+      .x-certs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .x-certs .x-proj { cursor: pointer; }
+      .x-certs .x-proj h3 { font: var(--type-body-strong); }
+      .x-certs .x-proj__foot { margin-top: auto; justify-content: space-between; }
+      .x-certs .x-proj__foot .x-proj__open { margin: 0; padding: 0; }
+      .x-certs .x-proj.is-active { border-color: var(--text-primary); background: var(--fill-primary-on); box-shadow: 0 0 0 1px var(--text-primary), var(--sv-shadow); }
+      .x-certs .x-proj.is-active .x-proj__open { color: var(--text-primary); }
+      .x-verify { font: var(--type-tag); }
+      .x-slot { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; margin-bottom: 0; transition: grid-template-rows 480ms var(--ease-out), opacity 360ms ease, margin-bottom 480ms var(--ease-out), visibility 0s linear 480ms; scroll-margin-top: 96px; }
+      .x-slot.is-open { grid-template-rows: 1fr; opacity: 1; visibility: visible; margin-bottom: 16px; transition: grid-template-rows 480ms var(--ease-out), opacity 360ms ease 80ms, margin-bottom 480ms var(--ease-out), visibility 0s; }
+      .x-slot__inner { min-height: 0; overflow: hidden; }
+      .x-slot__frame { position: relative; padding: clamp(14px, 2.4vw, 28px); border-radius: var(--r-l); background: var(--fill-tertiary); border: 1px solid var(--stroke-secondary); }
+      .x-slot__frame img { display: none; width: 100%; height: min(70vh, 640px); object-fit: contain; border-radius: var(--r-s); }
+      .x-slot__frame img.is-shown { display: block; animation: x-fade-in 420ms var(--ease-out); }
+      @keyframes x-fade-in { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: none; } }
+      .x-slot__close { position: absolute; top: 10px; right: 10px; z-index: 1; width: var(--tap); height: var(--tap); padding: 0; background: var(--mat-regular); -webkit-backdrop-filter: var(--sv-blur); backdrop-filter: var(--sv-blur); }
+      @media (prefers-reduced-motion: reduce) { .x-slot, .x-slot.is-open { transition: none; } .x-slot__frame img.is-shown { animation: none; } }
+      @media (max-width: 899px) { .x-certs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 600px) { .x-certs { grid-template-columns: 1fr; } .x-slot__frame img { height: auto; max-height: 70vh; } }
+
+      /* Contact */
+      .x-contact {
+        position: relative; isolation: isolate; overflow: hidden; text-align: center;
+        display: grid; justify-items: center; gap: 18px; padding: clamp(40px, 7vw, 88px) clamp(20px, 5vw, 64px);
+        border-radius: var(--r-xl); border: 1px solid var(--stroke-secondary); background: var(--fill-primary-on);
+      }
+      .x-contact h2 { font: var(--weight-medium) clamp(32px, 5.4vw, 60px)/1.05 var(--sans); letter-spacing: -0.03em; max-width: 16ch; }
+      .x-contact > p { color: var(--text-secondary); font-size: var(--size-prose); line-height: 1.5; max-width: 52ch; }
+      .x-mail { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; padding: 6px 6px 6px 18px; border-radius: var(--r-pill); background: var(--mat-agent); border: 1px solid var(--stroke-primary); max-width: 100%; }
+      .x-mail a { display: inline-flex; align-items: center; min-height: var(--tap); font: var(--type-body-strong); color: var(--text-primary); text-decoration: none; overflow-wrap: anywhere; }
+      .x-mail a:hover { text-decoration: underline; text-underline-offset: 3px; }
+      .x-copy { min-height: var(--tap); padding: 0 16px; font: var(--type-tag); border: 0; }
+      .x-status { min-height: 1.3em; font: var(--type-small); color: var(--text-secondary); }
+      .x-contact .x-actions { justify-content: center; }
+
+      /* Reveal on scroll, only when motion is welcome */
+      .x-motion .x-reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+      .x-motion .x-reveal.is-in { opacity: 1; transform: none; }
+      @media (prefers-reduced-motion: reduce) {
+        .x-glow span, .x-avatar::before, .x-avail::before { animation: none; }
+        .x-proj:hover, .x-cta:active, .x-iconbtn:active { transform: none; }
+        .x-theme svg { transition: none; }
+        .x-modal, .x-modal__panel { transition: none !important; }
+      }
+
+      /* Resume preview overlay */
+      button.x-cta { font: var(--type-body-strong); }
+      .x-lock { overflow: hidden; }
+      .x-modal {
+        position: fixed; inset: 0; z-index: 100; display: grid; place-items: center;
+        padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px));
+        background: rgba(0, 0, 0, 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+        opacity: 0; visibility: hidden; transition: opacity 250ms var(--ease-out), visibility 0s linear 250ms;
+      }
+      .x-modal.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+      .x-modal__panel {
+        position: relative; width: 100%; max-width: 900px; max-height: 100%; overflow-y: auto; overscroll-behavior: contain;
+        border-radius: var(--r-l); background: var(--fill-primary-on); color: var(--text-primary);
+        border: 1px solid var(--stroke-secondary); box-shadow: var(--sv-shadow);
+        transform: scale(0.96) translateY(8px); transition: transform 300ms var(--ease-out);
+      }
+      .x-modal.is-open .x-modal__panel { transform: none; }
+      .x-modal__bar {
+        position: sticky; bottom: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        padding: 10px; background: var(--mat-regular); -webkit-backdrop-filter: var(--sv-blur); backdrop-filter: var(--sv-blur);
+        border-top: 1px solid var(--stroke-secondary);
+      }
+      .x-modal__bar .x-cta { padding: 0 16px; min-height: 48px; height: 48px; box-sizing: border-box; }
+      .x-modal__body { padding: 16px; }
+      .x-modal__body img { display: block; width: 100%; height: auto; border-radius: var(--r-s); border: 1px solid var(--stroke-secondary); background: #fff; }
+      @media (max-width: 600px) { .x-modal { padding: 8px; } .x-modal__body { padding: 8px; } }
+    </style>
+  </head>
+  <body>
+    <div class="page" id="top">
+      <header class="x-bar" id="x-bar">
+        <a class="x-brand" href="#top" aria-label="Sairohith Vamsani, back to top"><span class="x-brand__mark" aria-hidden="true">SV</span><span>Sairohith Vamsani</span></a>
+        <nav aria-label="Sections">
+          <ul class="x-links" id="x-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <button class="x-iconbtn x-menu" id="x-menu" type="button" aria-expanded="false" aria-controls="x-links" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+        </button>
+        <button class="x-iconbtn x-theme" id="x-theme" type="button" aria-label="Switch to dark theme">
+          <svg class="x-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" /></svg>
+          <svg class="x-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+        </button>
+      </header>
+
+      <main class="main">
+        <section class="x-hero" aria-labelledby="name">
+          <div class="x-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="x-hero__copy">
+            <p class="x-avail">Open to full-time roles and internships</p>
+            <h1 id="name">Sairohith Vamsani</h1>
+            <p class="x-role">AI / ML Engineer · NLP &amp; Speech</p>
+            <p class="x-tagline">Computer Science (AI &amp; ML) graduate, 2026 batch, building NLP, semantic search and text-to-speech systems.</p>
+            <p class="x-loc">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+              Hyderabad, India · Hyderabad or remote, India
+            </p>
+            <div class="x-actions">
+              <a class="x-cta x-cta--solid" href="#projects">View projects
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg></a>
+              <button class="x-cta x-cta--line" type="button" data-resume aria-haspopup="dialog" aria-controls="x-resume">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>Download Resume</button>
+              <a class="x-iconbtn" href="https://github.com/SairohithVamsani" target="_blank" rel="noopener" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg></a>
+              <a class="x-iconbtn" href="https://www.linkedin.com/in/sairohith-vamsani-151851299/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92ZM20.44 13.3c0-3.1-1.65-4.55-3.86-4.55a3.33 3.33 0 0 0-3.02 1.66V8.5h-3.37V20h3.37v-5.7c0-1.5.28-2.95 2.14-2.95 1.83 0 1.86 1.71 1.86 3.05V20h3.38v-6.7Z" /></svg></a>
+              <a class="x-iconbtn" href="mailto:sairohithvamsani@gmail.com" aria-label="Email sairohithvamsani@gmail.com">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m4 7 8 6 8-6" /></svg></a>
+            </div>
+            <ul class="x-facts" aria-label="At a glance">
+              <li>CGPA <b>8.64/10</b></li>
+              <li><b>Infosys Springboard</b> AI/ML Intern</li>
+              <li><b>8</b> public GitHub repos</li>
+            </ul>
+          </div>
+          <div class="x-avatar">
+            <span class="x-avatar__mono" role="img" aria-label="Sairohith Vamsani monogram">SV</span>
+          </div>
+        </section>
+
+        <section class="section" id="about" data-nav="About">
+          <div class="head x-reveal">
+            <p class="head__eyebrow x-mono">01 · About</p>
+            <h2>I build language systems that people can trust and hear.</h2>
+          </div>
+          <div class="pair x-reveal">
+            <div class="prose">
+              <p>Computer Science (AI &amp; ML) graduate, 2026 batch, CGPA 8.64. At an Infosys Springboard internship I built the semantic search module of a medical knowledge-graph platform using Sentence-Transformer embeddings and Neo4j.</p>
+              <p>Most recently I trained FastSpeech 2 text-to-speech models for English and Telugu, including a rule-based Telugu G2P written from scratch. I also build and deploy XGBoost prediction models in Streamlit.</p>
+              <p>Skilled in Python, SQL, machine learning and NLP; currently learning Java.</p>
+              <div class="x-actions">
+                <button class="x-cta x-cta--line" type="button" data-resume aria-haspopup="dialog" aria-controls="x-resume">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>Download Resume</button>
+              </div>
+            </div>
+            <div class="cards">
+              <div class="x-edu">
+                <p class="x-label">Education</p>
+                <h3>Malla Reddy University, Hyderabad</h3>
+                <ul>
+                  <li>B.Tech, Computer Science and Engineering (AI &amp; ML)<small>Aug 2022 – May 2026</small></li>
+                  <li>CGPA <b>8.64</b> / 10</li>
+                  <li>
+                    <p class="x-label" style="margin-top:6px">Relevant coursework</p>
+                    <ul class="x-tags">
+                      <li><span class="pill">Data Structures &amp; Algorithms</span></li>
+                      <li><span class="pill">OOP</span></li>
+                      <li><span class="pill">DBMS</span></li>
+                      <li><span class="pill">Operating Systems</span></li>
+                      <li><span class="pill">Computer Networks</span></li>
+                      <li><span class="pill">Machine Learning</span></li>
+                      <li><span class="pill">Deep Learning</span></li>
+                      <li><span class="pill">Natural Language Processing</span></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="experience" data-nav="Experience">
+          <div class="head x-reveal">
+            <p class="head__eyebrow x-mono">02 · Experience</p>
+            <h2>Semantic search for a medical knowledge graph.</h2>
+          </div>
+          <ol class="timeline x-reveal">
+            <li>
+              <p class="timeline__when">Sep – Nov 2025</p>
+              <div class="timeline__what">
+                <h3 class="x-role-title">AI/ML Intern · Infosys Springboard</h3>
+                <p class="x-org">Virtual Internship 6.0 · Project: <a class="link" href="https://github.com/SairohithVamsani/HealthIntellect-Medical-NLP-Analytics-Suite" target="_blank" rel="noopener">HealthIntellect, Medical NLP &amp; Knowledge Graph Platform</a></p>
+                <ul>
+                  <li>Built the semantic search &amp; query module of a 6-module medical NLP platform, ranking documents and graph triples by cosine similarity of Sentence-Transformer embeddings for plain-English medical queries.</li>
+                  <li>Made every answer traceable by indexing subject–predicate–object triples with their source sentence, so users see the evidence behind each result.</li>
+                  <li>Integrated search with the platform's hybrid NER (spaCy + BioBERT + rules) and 3-strategy relation extraction, filtering low-confidence relations before storage.</li>
+                  <li>Loaded the knowledge graph into Neo4j with idempotent Cypher MERGE queries and shipped it in a Streamlit app with JWT role-based access and live Wikipedia/arXiv API ingestion.</li>
+                </ul>
+              </div>
+              <p><span class="pill">Remote</span></p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="section" id="projects" data-nav="Projects">
+          <div class="head x-reveal">
+            <p class="head__eyebrow x-mono">03 · Projects</p>
+            <h2>Speech, search and prediction, built end to end.</h2>
+            <p class="head__sub">Four projects. Pick any card below to see it in full.</p>
+          </div>
+          <div class="x-projects" id="x-projects">
+            <article class="x-proj x-proj--feature x-reveal" id="proj-healthintellect" data-name="HealthIntellect">
+              <div>
+                <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">Sep–Nov 2025</span></div>
+                <h3>HealthIntellect – Medical NLP Analytics Suite<small>Infosys Springboard Internship</small></h3>
+                <p>AI-driven medical NLP suite that turns clinical text into a Neo4j knowledge graph linking symptoms, diseases, drugs and tests; I built the semantic search and query module.</p>
+                <ul class="x-figs x-feat-only">
+                  <li><b>6 modules</b>medical NLP platform</li>
+                  <li><b>Neo4j</b>knowledge graph with Cypher MERGE</li>
+                </ul>
+                <ul class="x-tags" aria-label="Tech">
+                  <li><span class="pill">Python</span></li><li><span class="pill">Sentence-Transformers</span></li><li><span class="pill">BioBERT</span></li><li><span class="pill">spaCy</span></li><li><span class="pill">Neo4j</span></li><li><span class="pill">Streamlit</span></li><li><span class="pill">JWT</span></li>
+                </ul>
+                <div class="x-proj__foot x-feat-only">
+                  <a class="btn" href="https://github.com/SairohithVamsani/HealthIntellect-Medical-NLP-Analytics-Suite" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+                <p class="x-proj__open x-small-only" aria-hidden="true">Show details →</p>
+              </div>
+              <ul class="x-points x-feat-only">
+                <li>Ranked documents and graph triples by cosine similarity of Sentence-Transformer embeddings for plain-English medical queries.</li>
+                <li>Indexed subject–predicate–object triples with their source sentence so every answer shows its evidence.</li>
+                <li>Integrated with hybrid NER (spaCy + BioBERT + rules) and 3-strategy relation extraction, filtering low-confidence relations.</li>
+                <li>Shipped in Streamlit with JWT role-based access and live Wikipedia/arXiv ingestion.</li>
+              </ul>
+            </article>
+
+            <article class="x-proj x-reveal" id="proj-fastspeech" data-name="FastSpeech 2 Text-to-Speech">
+              <div>
+                <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span><span class="chip">Newest</span></span><span class="x-proj__when x-mono">Nov 2026</span></div>
+                <h3>FastSpeech 2 Text-to-Speech<small>English + Telugu</small></h3>
+                <p>Two FastSpeech 2 models trained separately: English on Svarah (Indian-accented English) and Telugu on IndicTTS Telugu.</p>
+                <ul class="x-figs x-feat-only">
+                  <li><b>~5 h + 1 h</b>training + validation audio each</li>
+                  <li><b>2×T4</b>free Kaggle GPU, end to end</li>
+                </ul>
+                <ul class="x-tags" aria-label="Tech">
+                  <li><span class="pill">Python</span></li><li><span class="pill">PyTorch</span></li><li><span class="pill">FastSpeech 2</span></li><li><span class="pill">TTS</span></li><li><span class="pill">G2P</span></li><li><span class="pill">Kaggle</span></li>
+                </ul>
+                <div class="x-proj__foot x-feat-only">
+                  <a class="btn" href="https://github.com/SairohithVamsani/FastSpeech2-English-Telugu" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+                <p class="x-proj__open x-small-only" aria-hidden="true">Show details →</p>
+              </div>
+              <ul class="x-points x-feat-only">
+                <li>Replaced Montreal Forced Aligner with a learned monotonic aligner trained jointly (forward-sum/CTC loss, beta-binomial prior, MAS), since MFA has no Telugu model.</li>
+                <li>Wrote a new Unicode akshara G2P for Telugu (inherent vowel, virama, matras, anusvara, visarga, geminates) plus a Telugu number/time/ordinal normaliser.</li>
+                <li>Extended English normalisation to times, dates, years and ordinals.</li>
+                <li>Shipped with loss curves, pitch/energy/duration plots and a technical report.</li>
+              </ul>
+            </article>
+
+            <article class="x-proj x-reveal" id="proj-disease" data-name="Disease Insight">
+              <div>
+                <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">2025</span></div>
+                <h3>Disease Insight – Multiple Disease Prediction System<small>End-to-end ML web app</small></h3>
+                <p>Predicts risk for multiple diseases from patient health inputs, one XGBoost model per disease behind a single Streamlit UI.</p>
+                <ul class="x-figs x-feat-only">
+                  <li><b>XGBoost</b>one model per disease</li>
+                  <li><b>Joblib</b>models loaded once at start-up</li>
+                </ul>
+                <ul class="x-tags" aria-label="Tech">
+                  <li><span class="pill">Python</span></li><li><span class="pill">XGBoost</span></li><li><span class="pill">Streamlit</span></li><li><span class="pill">Pandas</span></li><li><span class="pill">NumPy</span></li><li><span class="pill">Joblib</span></li>
+                </ul>
+                <div class="x-proj__foot x-feat-only"><span class="x-onreq">Source on request</span></div>
+                <p class="x-proj__open x-small-only" aria-hidden="true">Show details →</p>
+              </div>
+              <ul class="x-points x-feat-only">
+                <li>Data cleaning, feature scaling and feature selection, validated on held-out test data.</li>
+                <li>Real-time predictions in an interactive Streamlit interface.</li>
+                <li>Modular design so new disease models plug in without touching core code.</li>
+              </ul>
+            </article>
+
+            <article class="x-proj x-reveal" id="proj-spam" data-name="Spam Email Classifier">
+              <div>
+                <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">Jan 2025</span></div>
+                <h3>Spam Email Classifier – NLP Text Classification<small>Classic NLP pipeline</small></h3>
+                <p>Classifies emails as spam or ham with Multinomial Naive Bayes on Bag-of-Words features.</p>
+                <ul class="x-figs x-feat-only">
+                  <li><b>Naive Bayes</b>multinomial classifier</li>
+                  <li><b>NLTK</b>full preprocessing pipeline</li>
+                </ul>
+                <ul class="x-tags" aria-label="Tech">
+                  <li><span class="pill">Python</span></li><li><span class="pill">NLTK</span></li><li><span class="pill">scikit-learn</span></li>
+                </ul>
+                <div class="x-proj__foot x-feat-only"><span class="x-onreq">Source on request</span></div>
+                <p class="x-proj__open x-small-only" aria-hidden="true">Show details →</p>
+              </div>
+              <ul class="x-points x-feat-only">
+                <li>Tokenization and stop-word removal.</li>
+                <li>Stemming plus POS-aware lemmatization.</li>
+                <li>Bag-of-Words feature extraction with scikit-learn.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="x-more x-reveal">
+            <h3>More on GitHub</h3>
+            <ul class="x-repos">
+              <li><a href="https://github.com/SairohithVamsani/app_sentimentanalysis" target="_blank" rel="noopener"><strong>Sentiment Analysis App</strong><span>Python app</span><i aria-hidden="true">↗</i></a></li>
+              <li><a href="https://github.com/SairohithVamsani/NLP" target="_blank" rel="noopener"><strong>NLP Text-Processing Challenges</strong><span>Query correction, hashtag segmentation, language detection, acronym expansion, disambiguation</span><i aria-hidden="true">↗</i></a></li>
+              <li><a href="https://github.com/SairohithVamsani/Excel-R" target="_blank" rel="noopener"><strong>Excel-R Data Science Notebooks</strong><span>Daily Jupyter notebooks, including NLP</span><i aria-hidden="true">↗</i></a></li>
+              <li><a href="https://github.com/SairohithVamsani/Big-Data-Analytics" target="_blank" rel="noopener"><strong>Big Data Analytics</strong><span>Jupyter</span><i aria-hidden="true">↗</i></a></li>
+            </ul>
+            <a class="x-cta x-cta--line" href="https://github.com/SairohithVamsani?tab=repositories" target="_blank" rel="noopener">See all repositories ↗</a>
+          </div>
+        </section>
+
+        <section class="section" id="skills" data-nav="Skills">
+          <div class="head x-reveal">
+            <p class="head__eyebrow x-mono">04 · Skills</p>
+            <h2>Python first, with the ML and NLP stack around it.</h2>
+          </div>
+          <div class="cards x-reveal">
+            <div>
+              <h3>Languages</h3>
+              <ul class="x-tags"><li><span class="pill">Python</span></li><li><span class="pill">SQL</span></li><li><span class="pill">R</span></li><li><span class="pill">Java (learning)</span></li></ul>
+            </div>
+            <div>
+              <h3>Databases</h3>
+              <ul class="x-tags"><li><span class="pill">MySQL</span></li><li><span class="pill">SQLite</span></li><li><span class="pill">Neo4j (Cypher)</span></li></ul>
+            </div>
+            <div>
+              <h3>Libraries</h3>
+              <ul class="x-tags"><li><span class="pill">PyTorch</span></li><li><span class="pill">Pandas</span></li><li><span class="pill">NumPy</span></li><li><span class="pill">Scikit-learn</span></li><li><span class="pill">Hugging Face Transformers</span></li><li><span class="pill">spaCy</span></li><li><span class="pill">NLTK</span></li><li><span class="pill">Streamlit</span></li></ul>
+            </div>
+            <div>
+              <h3>ML / NLP</h3>
+              <ul class="x-tags"><li><span class="pill">Machine Learning</span></li><li><span class="pill">NLP</span></li><li><span class="pill">Transformers (BERT, BioBERT)</span></li><li><span class="pill">Sentence Embeddings</span></li><li><span class="pill">Semantic Search</span></li><li><span class="pill">NER</span></li><li><span class="pill">Text-to-Speech (FastSpeech 2)</span></li><li><span class="pill">XGBoost</span></li><li><span class="pill">Naive Bayes</span></li><li><span class="pill">Feature Engineering</span></li><li><span class="pill">Model Evaluation</span></li><li><span class="pill">Generative AI</span></li><li><span class="pill">Prompt Engineering</span></li></ul>
+            </div>
+            <div>
+              <h3>Tools</h3>
+              <ul class="x-tags"><li><span class="pill">Git</span></li><li><span class="pill">GitHub</span></li><li><span class="pill">Kaggle</span></li><li><span class="pill">Power BI</span></li><li><span class="pill">Excel</span></li><li><span class="pill">Jupyter Notebook</span></li><li><span class="pill">VS Code</span></li><li><span class="pill">REST APIs</span></li></ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="certifications" data-nav="Certifications">
+          <div class="head x-reveal">
+            <p class="head__eyebrow x-mono">05 · Certifications</p>
+            <h2>Four certifications in ML, generative AI and Python.</h2>
+          </div>
+          <div class="x-slot" id="x-cert-slot" aria-hidden="true" inert>
+            <div class="x-slot__inner">
+              <div class="x-slot__frame" role="region" aria-label="Certificate viewer">
+                <button class="x-iconbtn x-slot__close" id="x-cert-close" type="button" aria-label="Close certificate">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+                </button>
+                <img data-cert="ml" src="cert-ml.jpg" alt="Microsoft Learn certificate: Fundamentals of Machine Learning, Feb 7, 2025" loading="lazy" />
+                <img data-cert="genai" src="cert-genai.jpg" alt="Microsoft Learn certificate: Fundamentals of Generative AI, Jan 22, 2025" loading="lazy" />
+                <img data-cert="python" src="cert-python.jpg" alt="Coursera and University of Pennsylvania certificate: Introduction to Python Programming, Jun 3, 2023" loading="lazy" />
+                <img data-cert="infosys" src="cert-infosys.jpg" alt="Infosys Springboard certificate of completion: AI/ML Virtual Internship 6.0, Sep 15 to Nov 25, 2025" loading="lazy" />
+              </div>
+            </div>
+          </div>
+          <div class="x-projects x-certs x-reveal" id="x-certs">
+            <article class="x-proj x-cert" data-cert="ml" tabindex="0" role="button" aria-pressed="false" aria-controls="x-cert-slot">
+              <div>
+                <div class="x-proj__top"><span class="x-label">Microsoft Learn</span><span class="x-proj__when x-mono">Feb 7, 2025</span></div>
+                <h3>Fundamentals of Machine Learning</h3>
+                <div class="x-proj__foot"><span class="x-proj__open" aria-hidden="true">View certificate →</span></div>
+              </div>
+            </article>
+            <article class="x-proj x-cert" data-cert="genai" tabindex="0" role="button" aria-pressed="false" aria-controls="x-cert-slot">
+              <div>
+                <div class="x-proj__top"><span class="x-label">Microsoft Learn</span><span class="x-proj__when x-mono">Jan 22, 2025</span></div>
+                <h3>Fundamentals of Generative AI</h3>
+                <div class="x-proj__foot"><span class="x-proj__open" aria-hidden="true">View certificate →</span></div>
+              </div>
+            </article>
+            <article class="x-proj x-cert" data-cert="python" tabindex="0" role="button" aria-pressed="false" aria-controls="x-cert-slot">
+              <div>
+                <div class="x-proj__top"><span class="x-label">University of Pennsylvania via Coursera</span><span class="x-proj__when x-mono">Jun 3, 2023</span></div>
+                <h3>Introduction to Python Programming</h3>
+                <div class="x-proj__foot"><span class="x-proj__open" aria-hidden="true">View certificate →</span><a class="link x-verify" href="https://coursera.org/verify/W6UXJ8YZDBWA" target="_blank" rel="noopener">Verify</a></div>
+              </div>
+            </article>
+            <article class="x-proj x-cert" data-cert="infosys" tabindex="0" role="button" aria-pressed="false" aria-controls="x-cert-slot">
+              <div>
+                <div class="x-proj__top"><span class="x-label">Infosys Springboard</span><span class="x-proj__when x-mono">Sep 15 – Nov 25, 2025</span></div>
+                <h3>AI/ML Virtual Internship 6.0</h3>
+                <div class="x-proj__foot"><span class="x-proj__open" aria-hidden="true">View certificate →</span></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="contact" data-nav="Contact">
+          <div class="x-contact x-reveal">
+            <div class="x-glow" aria-hidden="true"><span></span><span></span><span></span></div>
+            <p class="x-label x-mono">06 · Contact</p>
+            <h2>Let's build something together.</h2>
+            <p>Open to AI/ML, NLP and software roles and internships, in Hyderabad or remote in India.</p>
+            <div class="x-mail">
+              <a id="x-email" href="mailto:sairohithvamsani@gmail.com">sairohithvamsani@gmail.com</a>
+              <button class="x-cta x-cta--solid x-copy" id="x-copy" type="button">Copy email</button>
+            </div>
+            <p class="x-status" id="x-status" role="status" aria-live="polite"></p>
+            <div class="x-actions">
+              <a class="x-cta x-cta--line" href="https://www.linkedin.com/in/sairohith-vamsani-151851299/" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a class="x-cta x-cta--line" href="https://github.com/SairohithVamsani" target="_blank" rel="noopener">GitHub ↗</a>
+              <button class="x-cta x-cta--solid" type="button" data-resume aria-haspopup="dialog" aria-controls="x-resume">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>Download Resume</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="foot">
+        <p>© 2026 Sairohith Vamsani · Built with care.</p>
+        <nav aria-label="Back to sections" data-auto></nav>
+      </footer>
+    </div>
+    <div class="x-modal" id="x-resume" role="dialog" aria-modal="true" aria-label="Resume preview" aria-hidden="true">
+      <div class="x-modal__panel" tabindex="-1">
+        <div class="x-modal__body">
+          <img src="resume-preview.jpg" alt="Sairohith Vamsani resume" />
+        </div>
+        <div class="x-modal__bar">
+          <button class="x-cta x-cta--line" type="button" data-resume-close>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>Close</button>
+          <a class="x-cta x-cta--solid" href="Sairohith_Vamsani_Resume.pdf" download="Sairohith_Vamsani_Resume.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>Download to save</a>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      (function () {
+        var doc = document, root = doc.documentElement;
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+        /* Theme: follows the system unless the visitor picks one */
+        try { var saved = localStorage.getItem("sv-theme"); if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved); } catch (e) {}
+        var themeBtn = doc.getElementById("x-theme");
+        function current() { var t = root.getAttribute("data-theme"); return t === "light" || t === "dark" ? t : (mq.matches ? "dark" : "light"); }
+        function label() { themeBtn.setAttribute("aria-label", current() === "dark" ? "Switch to light theme" : "Switch to dark theme"); }
+        var fadeTimer;
+        themeBtn.addEventListener("click", function () {
+          var next = current() === "dark" ? "light" : "dark";
+          if (!reduce) { root.classList.add("x-theming"); clearTimeout(fadeTimer); fadeTimer = setTimeout(function () { root.classList.remove("x-theming"); }, 600); }
+          root.setAttribute("data-theme", next);
+          try { localStorage.setItem("sv-theme", next); } catch (e) {}
+          label();
+        });
+        if (mq.addEventListener) mq.addEventListener("change", label);
+        label();
+
+        /* Mobile menu */
+        var bar = doc.getElementById("x-bar"), menu = doc.getElementById("x-menu");
+        function setMenu(open) { bar.classList.toggle("is-open", open); menu.setAttribute("aria-expanded", open ? "true" : "false"); menu.setAttribute("aria-label", open ? "Close menu" : "Open menu"); }
+        menu.addEventListener("click", function () { setMenu(!bar.classList.contains("is-open")); });
+        [].forEach.call(doc.querySelectorAll("#x-links a"), function (a) { a.addEventListener("click", function () { setMenu(false); }); });
+        doc.addEventListener("keydown", function (e) { if (e.key === "Escape" && bar.classList.contains("is-open")) { setMenu(false); menu.focus(); } });
+        doc.addEventListener("click", function (e) { if (!bar.contains(e.target)) setMenu(false); });
+
+        /* Active section in the nav */
+        var links = [].slice.call(doc.querySelectorAll("#x-links a"));
+        if ("IntersectionObserver" in window) {
+          var spy = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (!en.isIntersecting) return;
+              links.forEach(function (a) { if (a.getAttribute("href") === "#" + en.target.id) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+            });
+          }, { rootMargin: "-45% 0px -50% 0px" });
+          links.forEach(function (a) { var s = doc.getElementById(a.getAttribute("href").slice(1)); if (s) spy.observe(s); });
+
+          /* Reveal on scroll */
+          if (!reduce) {
+            root.classList.add("x-motion");
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); } });
+            }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+            [].forEach.call(doc.querySelectorAll(".x-reveal"), function (el) { io.observe(el); });
+          }
+        }
+
+        /* Project switcher: a compact card swaps places with the featured one */
+        var grid = doc.getElementById("x-projects");
+        function setMode(card, featured) {
+          card.classList.toggle("x-proj--feature", featured);
+          if (featured) {
+            card.setAttribute("tabindex", "-1");
+            card.removeAttribute("role");
+            card.removeAttribute("aria-label");
+          } else {
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("role", "button");
+            card.setAttribute("aria-label", "Show " + card.getAttribute("data-name") + " in full");
+          }
+        }
+        function animateIn(card) {
+          if (reduce) return;
+          card.classList.remove("is-swapped"); void card.offsetWidth; card.classList.add("is-swapped");
+        }
+        function feature(card, fromKey) {
+          var cur = grid.querySelector(".x-proj--feature");
+          if (!cur || cur === card) return;
+          var mark = doc.createComment("");
+          grid.replaceChild(mark, card);
+          grid.replaceChild(card, cur);
+          grid.replaceChild(cur, mark);
+          setMode(card, true); setMode(cur, false);
+          card.classList.add("is-in"); cur.classList.add("is-in");
+          animateIn(card); animateIn(cur);
+          var r = card.getBoundingClientRect();
+          if (r.top < 80 || r.top > window.innerHeight * 0.5) card.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+          if (fromKey) { try { card.focus({ preventScroll: true }); } catch (e) { card.focus(); } }
+        }
+        [].forEach.call(grid.querySelectorAll(".x-proj"), function (card) {
+          setMode(card, card.classList.contains("x-proj--feature"));
+          card.addEventListener("click", function (e) {
+            if (card.classList.contains("x-proj--feature") || e.target.closest("a")) return;
+            feature(card, false);
+          });
+          card.addEventListener("keydown", function (e) {
+            if (card.classList.contains("x-proj--feature") || e.target !== card) return;
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); feature(card, true); }
+          });
+          card.addEventListener("animationend", function () { card.classList.remove("is-swapped"); });
+        });
+
+        /* Certificate viewer: one slot above the cards */
+        var slot = doc.getElementById("x-cert-slot"), certGrid = doc.getElementById("x-certs");
+        var certCards = certGrid.querySelectorAll(".x-cert"), certImgs = slot.querySelectorAll("img"), activeCert = null;
+        function closeCert(returnFocus) {
+          slot.classList.remove("is-open"); slot.setAttribute("aria-hidden", "true"); slot.setAttribute("inert", "");
+          if (activeCert) { activeCert.classList.remove("is-active"); activeCert.setAttribute("aria-pressed", "false"); if (returnFocus) activeCert.focus(); }
+          activeCert = null;
+        }
+        function openCert(card) {
+          var key = card.getAttribute("data-cert");
+          [].forEach.call(certImgs, function (img) {
+            var on = img.getAttribute("data-cert") === key;
+            if (on) img.removeAttribute("loading");
+            img.classList.toggle("is-shown", on);
+          });
+          [].forEach.call(certCards, function (c) { var on = c === card; c.classList.toggle("is-active", on); c.setAttribute("aria-pressed", on ? "true" : "false"); });
+          activeCert = card;
+          slot.classList.add("is-open"); slot.removeAttribute("aria-hidden"); slot.removeAttribute("inert");
+          setTimeout(function () {
+            var r = slot.getBoundingClientRect();
+            if (r.top < 80 || r.top > window.innerHeight * 0.4) slot.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+          }, reduce ? 0 : 60);
+        }
+        function toggleCert(card) { if (card === activeCert) closeCert(false); else openCert(card); }
+        [].forEach.call(certCards, function (card) {
+          card.addEventListener("click", function (e) { if (e.target.closest("a")) return; toggleCert(card); });
+          card.addEventListener("keydown", function (e) {
+            if (e.target !== card) return;
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleCert(card); }
+          });
+        });
+        doc.getElementById("x-cert-close").addEventListener("click", function () { closeCert(true); });
+        slot.addEventListener("keydown", function (e) { if (e.key === "Escape") closeCert(true); });
+
+        /* Copy email, with fallbacks */
+        var copyBtn = doc.getElementById("x-copy"), status = doc.getElementById("x-status"), email = "sairohithvamsani@gmail.com";
+        function legacyCopy() {
+          var ta = doc.createElement("textarea"); ta.value = email; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+          doc.body.appendChild(ta); ta.select(); var ok = false; try { ok = doc.execCommand("copy"); } catch (e) {} doc.body.removeChild(ta); return ok;
+        }
+        function done(ok) {
+          if (ok) { copyBtn.textContent = "Copied"; status.textContent = "Email copied to clipboard."; }
+          else {
+            var r = doc.createRange(); r.selectNodeContents(doc.getElementById("x-email")); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+            status.textContent = "Email selected. Press Ctrl+C (or ⌘C) to copy.";
+          }
+          setTimeout(function () { copyBtn.textContent = "Copy email"; status.textContent = ""; }, 3000);
+        }
+        copyBtn.addEventListener("click", function () {
+          try {
+            if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(email).then(function () { done(true); }, function () { done(legacyCopy()); });
+            else done(legacyCopy());
+          } catch (e) { done(false); }
+        });
+
+        /* Resume preview overlay */
+        var modal = doc.getElementById("x-resume"), panel = modal.querySelector(".x-modal__panel"), opener = null;
+        var page = doc.querySelector(".page");
+        function openResume(e) {
+          opener = e.currentTarget;
+          modal.classList.add("is-open"); modal.setAttribute("aria-hidden", "false");
+          root.classList.add("x-lock"); doc.body.classList.add("x-lock");
+          if (page) page.setAttribute("inert", "");
+          panel.scrollTop = 0;
+          setTimeout(function () { modal.querySelector("[data-resume-close]").focus(); }, 30);
+        }
+        function closeResume() {
+          if (!modal.classList.contains("is-open")) return;
+          modal.classList.remove("is-open"); modal.setAttribute("aria-hidden", "true");
+          root.classList.remove("x-lock"); doc.body.classList.remove("x-lock");
+          if (page) page.removeAttribute("inert");
+          if (opener) opener.focus();
+        }
+        doc.querySelectorAll("[data-resume]").forEach(function (b) { b.addEventListener("click", openResume); });
+        modal.querySelector("[data-resume-close]").addEventListener("click", closeResume);
+        modal.addEventListener("click", function (e) { if (e.target === modal) closeResume(); });
+        doc.addEventListener("keydown", function (e) {
+          if (!modal.classList.contains("is-open")) return;
+          if (e.key === "Escape") { e.preventDefault(); closeResume(); return; }
+          if (e.key === "Tab") {
+            var f = modal.querySelectorAll("button, a[href]"), first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
