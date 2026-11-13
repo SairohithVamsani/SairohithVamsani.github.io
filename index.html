@@ -131,6 +131,10 @@
       .x-role-title { font: var(--type-heading); }
       .x-org { color: var(--text-secondary); margin: 4px 0 12px; }
       .timeline__what .x-org + ul li { line-height: 1.5; }
+      .x-org { line-height: 1.5; }
+      @media (max-width: 599px) {
+        .x-org .link { display: inline; min-width: 0; min-height: 0; margin: 0; padding: 6px 0; vertical-align: baseline; }
+      }
 
       /* Projects */
       .x-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
