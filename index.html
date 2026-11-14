@@ -210,6 +210,17 @@
       @media (max-width: 899px) { .x-certs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
       @media (max-width: 600px) { .x-certs { grid-template-columns: 1fr; } .x-slot__frame img { height: auto; max-height: 70vh; } }
 
+      /* Skill icons */
+      .x-skill-h { display: flex; align-items: center; gap: 12px; }
+      .x-skill-ic { display: inline-grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 12px; background: var(--fill-primary-on); border: 1px solid var(--stroke-secondary); color: var(--text-primary); }
+      .x-skill-ic svg { width: 20px; height: 20px; }
+
+      /* About stats */
+      .x-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 10px; max-width: 460px; }
+      .x-stat { display: grid; justify-items: center; gap: 4px; padding: 20px 12px; border-radius: var(--r-l, 20px); border: 1px solid var(--stroke-secondary); background: var(--fill-primary-on); text-align: center; }
+      .x-stat strong { font: var(--weight-medium) clamp(28px, 3.6vw, 38px)/1 var(--sans); letter-spacing: -0.02em; color: var(--text-primary); }
+      .x-stat span { font: var(--type-small); color: var(--text-secondary); }
+
       /* Contact */
       .x-contact {
         position: relative; isolation: isolate; overflow: hidden; text-align: center;
@@ -335,16 +346,15 @@
         <section class="section" id="about" data-nav="About">
           <div class="head x-reveal">
             <p class="head__eyebrow x-mono">01 · About</p>
-            <h2>I build language systems that people can trust and hear.</h2>
           </div>
           <div class="pair x-reveal">
             <div class="prose">
-              <p>Computer Science (AI &amp; ML) graduate, 2026 batch, CGPA 8.64. At an Infosys Springboard internship I built the semantic search module of a medical knowledge-graph platform using Sentence-Transformer embeddings and Neo4j.</p>
-              <p>Most recently I trained FastSpeech 2 text-to-speech models for English and Telugu, including a rule-based Telugu G2P written from scratch. I also build and deploy XGBoost prediction models in Streamlit.</p>
-              <p>Skilled in Python, SQL, machine learning and NLP; currently learning Java.</p>
-              <div class="x-actions">
-                <button class="x-cta x-cta--line" type="button" data-resume aria-haspopup="dialog" aria-controls="x-resume">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>Download Resume</button>
+              <p>I'm an AI/ML and Data Science professional who enjoys building intelligent solutions to real-world problems. I like exploring new technologies, working with data and turning machine learning concepts into practical Python applications.</p>
+              <p>I have hands-on experience with Python, Machine Learning, NLP, SQL and Streamlit. Through my academic and internship projects, I've built AI-powered applications, predictive models and semantic search solutions.</p>
+              <p>I'm currently looking for opportunities where I can apply my skills, learn from experienced professionals and contribute to impactful projects.</p>
+              <div class="x-stats">
+                <div class="x-stat"><strong>6+</strong><span>Projects Built</span></div>
+                <div class="x-stat"><strong>1</strong><span>Internship</span></div>
               </div>
             </div>
             <div class="cards">
@@ -376,7 +386,7 @@
         <section class="section" id="experience" data-nav="Experience">
           <div class="head x-reveal">
             <p class="head__eyebrow x-mono">02 · Experience</p>
-            <h2>Semantic search for a medical knowledge graph.</h2>
+            <h2>Built AI-powered semantic search for healthcare.</h2>
           </div>
           <ol class="timeline x-reveal">
             <li>
@@ -399,11 +409,11 @@
         <section class="section" id="projects" data-nav="Projects">
           <div class="head x-reveal">
             <p class="head__eyebrow x-mono">03 · Projects</p>
-            <h2>Speech, search and prediction, built end to end.</h2>
+            <h2 id="x-proj-heading">Medical text, turned into a searchable knowledge graph.</h2>
             <p class="head__sub">Four projects. Pick any card below to see it in full.</p>
           </div>
           <div class="x-projects" id="x-projects">
-            <article class="x-proj x-proj--feature x-reveal" id="proj-healthintellect" data-name="HealthIntellect">
+            <article class="x-proj x-proj--feature x-reveal" id="proj-healthintellect" data-heading="Medical text, turned into a searchable knowledge graph." data-name="HealthIntellect">
               <div>
                 <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">Sep–Nov 2025</span></div>
                 <h3>HealthIntellect – Medical NLP Analytics Suite<small>Infosys Springboard Internship</small></h3>
@@ -428,7 +438,7 @@
               </ul>
             </article>
 
-            <article class="x-proj x-reveal" id="proj-fastspeech" data-name="FastSpeech 2 Text-to-Speech">
+            <article class="x-proj x-reveal" id="proj-fastspeech" data-heading="Text-to-speech models for English and Telugu." data-name="FastSpeech 2 Text-to-Speech">
               <div>
                 <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span><span class="chip">Newest</span></span><span class="x-proj__when x-mono">Nov 2026</span></div>
                 <h3>FastSpeech 2 Text-to-Speech<small>English + Telugu</small></h3>
@@ -453,7 +463,7 @@
               </ul>
             </article>
 
-            <article class="x-proj x-reveal" id="proj-disease" data-name="Disease Insight">
+            <article class="x-proj x-reveal" id="proj-disease" data-heading="Predicting disease risk from patient health data." data-name="Disease Insight">
               <div>
                 <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">2025</span></div>
                 <h3>Disease Insight – Multiple Disease Prediction System<small>End-to-end ML web app</small></h3>
@@ -475,7 +485,7 @@
               </ul>
             </article>
 
-            <article class="x-proj x-reveal" id="proj-spam" data-name="Spam Email Classifier">
+            <article class="x-proj x-reveal" id="proj-spam" data-heading="Sorting spam from real email with classic NLP." data-name="Spam Email Classifier">
               <div>
                 <div class="x-proj__top"><span class="x-proj__badges"><span class="chip chip--solid x-feat-only">Featured</span></span><span class="x-proj__when x-mono">Jan 2025</span></div>
                 <h3>Spam Email Classifier – NLP Text Classification<small>Classic NLP pipeline</small></h3>
@@ -503,8 +513,6 @@
             <ul class="x-repos">
               <li><a href="https://github.com/SairohithVamsani/app_sentimentanalysis" target="_blank" rel="noopener"><strong>Sentiment Analysis App</strong><span>Python app</span><i aria-hidden="true">↗</i></a></li>
               <li><a href="https://github.com/SairohithVamsani/NLP" target="_blank" rel="noopener"><strong>NLP Text-Processing Challenges</strong><span>Query correction, hashtag segmentation, language detection, acronym expansion, disambiguation</span><i aria-hidden="true">↗</i></a></li>
-              <li><a href="https://github.com/SairohithVamsani/Excel-R" target="_blank" rel="noopener"><strong>Excel-R Data Science Notebooks</strong><span>Daily Jupyter notebooks, including NLP</span><i aria-hidden="true">↗</i></a></li>
-              <li><a href="https://github.com/SairohithVamsani/Big-Data-Analytics" target="_blank" rel="noopener"><strong>Big Data Analytics</strong><span>Jupyter</span><i aria-hidden="true">↗</i></a></li>
             </ul>
             <a class="x-cta x-cta--line" href="https://github.com/SairohithVamsani?tab=repositories" target="_blank" rel="noopener">See all repositories ↗</a>
           </div>
@@ -513,27 +521,27 @@
         <section class="section" id="skills" data-nav="Skills">
           <div class="head x-reveal">
             <p class="head__eyebrow x-mono">04 · Skills</p>
-            <h2>Python first, with the ML and NLP stack around it.</h2>
+            <h2>The tools I use to build AI that works.</h2>
           </div>
           <div class="cards x-reveal">
             <div>
-              <h3>Languages</h3>
-              <ul class="x-tags"><li><span class="pill">Python</span></li><li><span class="pill">SQL</span></li><li><span class="pill">R</span></li><li><span class="pill">Java (learning)</span></li></ul>
+              <h3 class="x-skill-h"><span class="x-skill-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg></span>Languages</h3>
+              <ul class="x-tags"><li><span class="pill">Python</span></li><li><span class="pill">Java</span></li></ul>
             </div>
             <div>
-              <h3>Databases</h3>
-              <ul class="x-tags"><li><span class="pill">MySQL</span></li><li><span class="pill">SQLite</span></li><li><span class="pill">Neo4j (Cypher)</span></li></ul>
+              <h3 class="x-skill-h"><span class="x-skill-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 10v10"/></svg></span>Databases</h3>
+              <ul class="x-tags"><li><span class="pill">SQL</span></li><li><span class="pill">MySQL</span></li><li><span class="pill">SQLite</span></li><li><span class="pill">Neo4j (Cypher)</span></li></ul>
             </div>
             <div>
-              <h3>Libraries</h3>
+              <h3 class="x-skill-h"><span class="x-skill-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg></span>Libraries</h3>
               <ul class="x-tags"><li><span class="pill">PyTorch</span></li><li><span class="pill">Pandas</span></li><li><span class="pill">NumPy</span></li><li><span class="pill">Scikit-learn</span></li><li><span class="pill">Hugging Face Transformers</span></li><li><span class="pill">spaCy</span></li><li><span class="pill">NLTK</span></li><li><span class="pill">Streamlit</span></li></ul>
             </div>
             <div>
-              <h3>ML / NLP</h3>
+              <h3 class="x-skill-h"><span class="x-skill-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><path d="M7 7l3.4 3.6M7 17l3.4-3.6M14 12h3"/></svg></span>ML / NLP</h3>
               <ul class="x-tags"><li><span class="pill">Machine Learning</span></li><li><span class="pill">NLP</span></li><li><span class="pill">Transformers (BERT, BioBERT)</span></li><li><span class="pill">Sentence Embeddings</span></li><li><span class="pill">Semantic Search</span></li><li><span class="pill">NER</span></li><li><span class="pill">Text-to-Speech (FastSpeech 2)</span></li><li><span class="pill">XGBoost</span></li><li><span class="pill">Naive Bayes</span></li><li><span class="pill">Feature Engineering</span></li><li><span class="pill">Model Evaluation</span></li><li><span class="pill">Generative AI</span></li><li><span class="pill">Prompt Engineering</span></li></ul>
             </div>
             <div>
-              <h3>Tools</h3>
+              <h3 class="x-skill-h"><span class="x-skill-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3 17.8V21h3.2l6.3-6.3a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.4-.4-2.4z"/></svg></span>Tools</h3>
               <ul class="x-tags"><li><span class="pill">Git</span></li><li><span class="pill">GitHub</span></li><li><span class="pill">Kaggle</span></li><li><span class="pill">Power BI</span></li><li><span class="pill">Excel</span></li><li><span class="pill">Jupyter Notebook</span></li><li><span class="pill">VS Code</span></li><li><span class="pill">REST APIs</span></li></ul>
             </div>
           </div>
@@ -542,7 +550,7 @@
         <section class="section" id="certifications" data-nav="Certifications">
           <div class="head x-reveal">
             <p class="head__eyebrow x-mono">05 · Certifications</p>
-            <h2>Four certifications in ML, generative AI and Python.</h2>
+            <h2 id="x-cert-heading">Four certifications in ML, generative AI and Python.</h2>
           </div>
           <div class="x-slot" id="x-cert-slot" aria-hidden="true" inert>
             <div class="x-slot__inner">
@@ -716,6 +724,7 @@
           grid.replaceChild(card, cur);
           grid.replaceChild(cur, mark);
           setMode(card, true); setMode(cur, false);
+          var ph = doc.getElementById("x-proj-heading"); if (ph && card.getAttribute("data-heading")) ph.textContent = card.getAttribute("data-heading");
           card.classList.add("is-in"); cur.classList.add("is-in");
           animateIn(card); animateIn(cur);
           var r = card.getBoundingClientRect();
@@ -742,9 +751,12 @@
           slot.classList.remove("is-open"); slot.setAttribute("aria-hidden", "true"); slot.setAttribute("inert", "");
           if (activeCert) { activeCert.classList.remove("is-active"); activeCert.setAttribute("aria-pressed", "false"); if (returnFocus) activeCert.focus(); }
           activeCert = null;
+          var chEl = doc.getElementById("x-cert-heading"); if (chEl) chEl.textContent = "Four certifications in ML, generative AI and Python.";
         }
+        var certTitles = {"ml":"Fundamentals of Machine Learning · Microsoft Learn","genai":"Fundamentals of Generative AI · Microsoft Learn","python":"Introduction to Python Programming · University of Pennsylvania via Coursera","infosys":"AI/ML Virtual Internship 6.0 · Infosys Springboard"};
         function openCert(card) {
           var key = card.getAttribute("data-cert");
+          var chOn = doc.getElementById("x-cert-heading"); if (chOn && certTitles[key]) chOn.textContent = certTitles[key];
           [].forEach.call(certImgs, function (img) {
             var on = img.getAttribute("data-cert") === key;
             if (on) img.removeAttribute("loading");
@@ -839,6 +851,7 @@
             body: JSON.stringify({ name: name, email: email, _replyto: email, _subject: "Portfolio: " + subject, message: msg, _template: "table", _captcha: "false" })
           }).then(function (r) { return r.json(); }).then(function (d) {
             if (d && (d.success === true || d.success === "true")) { form.reset(); out.textContent = "Thanks! Your message has been sent. I'll reply soon."; }
+            else if (d && d.message && /activat/i.test(d.message)) { out.textContent = "Form is being activated. Please try again shortly or email me directly."; }
             else { out.textContent = "Couldn't send right now. Please email me directly."; }
           }).catch(function () { out.textContent = "Couldn't send right now. Please email me directly."; })
             .finally(function () { btn.disabled = false; });
