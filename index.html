@@ -224,6 +224,18 @@
       .x-copy { min-height: var(--tap); padding: 0 16px; font: var(--type-tag); border: 0; }
       .x-status { min-height: 1.3em; font: var(--type-small); color: var(--text-secondary); }
       .x-contact .x-actions { justify-content: center; }
+      .x-form { width: 100%; max-width: 620px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; text-align: left; margin-top: 6px; }
+      .x-form .x-field { display: grid; gap: 6px; }
+      .x-form .x-field--full { grid-column: 1 / -1; }
+      .x-form label { font: var(--type-small); color: var(--text-secondary); }
+      .x-form input, .x-form textarea { width: 100%; font: inherit; font-size: 16px; color: var(--text-primary); background: var(--mat-agent, transparent); border: 1px solid var(--stroke-primary); border-radius: var(--r-m); padding: 12px 14px; outline: none; transition: border-color 160ms; }
+      .x-form textarea { min-height: 140px; resize: vertical; }
+      .x-form input:focus, .x-form textarea:focus { border-color: var(--text-primary); }
+      .x-form .x-hp { position: absolute; left: -9999px; }
+      .x-form .x-send { grid-column: 1 / -1; justify-self: center; min-width: 200px; }
+      .x-form .x-send[disabled] { opacity: .6; cursor: wait; }
+      .x-form-status { grid-column: 1 / -1; text-align: center; min-height: 1.3em; font: var(--type-small); color: var(--text-secondary); }
+      @media (max-width: 600px) { .x-form { grid-template-columns: 1fr; } .x-form .x-send { justify-self: stretch; } }
 
       /* Reveal on scroll, only when motion is welcome */
       .x-motion .x-reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
@@ -588,6 +600,16 @@
               <button class="x-cta x-cta--solid x-copy" id="x-copy" type="button">Copy email</button>
             </div>
             <p class="x-status" id="x-status" role="status" aria-live="polite"></p>
+            <form class="x-form" id="x-form" novalidate>
+              <div class="x-field"><label for="f-name">Your name *</label><input id="f-name" name="name" type="text" autocomplete="name" required /></div>
+              <div class="x-field"><label for="f-email">Your email *</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div>
+              <div class="x-field x-field--full"><label for="f-subject">Subject *</label><input id="f-subject" name="subject" type="text" required /></div>
+              <div class="x-field x-field--full"><label for="f-msg">Message *</label><textarea id="f-msg" name="message" required></textarea></div>
+              <input class="x-hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+              <button class="x-cta x-cta--solid x-send" type="submit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>Send message</button>
+              <p class="x-form-status" id="x-form-status" role="status" aria-live="polite"></p>
+            </form>
             <div class="x-actions">
               <a class="x-cta x-cta--line" href="https://www.linkedin.com/in/sairohith-vamsani-151851299/" target="_blank" rel="noopener">LinkedIn ↗</a>
               <a class="x-cta x-cta--line" href="https://github.com/SairohithVamsani" target="_blank" rel="noopener">GitHub ↗</a>
@@ -797,6 +819,29 @@
             if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
             else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
           }
+        });
+      })();
+    </script>
+    <script>
+      (function () {
+        var form = document.getElementById("x-form"); if (!form) return;
+        var out = document.getElementById("x-form-status"), btn = form.querySelector(".x-send");
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var el = form.elements; if (el._honey.value) return;
+          var name = el.name.value.trim(), email = el.email.value.trim(), subject = el.subject.value.trim(), msg = el.message.value.trim();
+          if (!name || !email || !subject || !msg) { out.textContent = "Please fill in every field."; return; }
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { out.textContent = "Please enter a valid email."; return; }
+          btn.disabled = true; out.textContent = "Sending…";
+          fetch("https://formsubmit.co/ajax/sairohithvamsani@gmail.com", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({ name: name, email: email, _replyto: email, _subject: "Portfolio: " + subject, message: msg, _template: "table", _captcha: "false" })
+          }).then(function (r) { return r.json(); }).then(function (d) {
+            if (d && (d.success === true || d.success === "true")) { form.reset(); out.textContent = "Thanks! Your message has been sent. I'll reply soon."; }
+            else { out.textContent = "Couldn't send right now. Please email me directly."; }
+          }).catch(function () { out.textContent = "Couldn't send right now. Please email me directly."; })
+            .finally(function () { btn.disabled = false; });
         });
       })();
     </script>
